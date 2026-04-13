@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS payments (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) CHECK (status IN ('PENDIENTE','COMPLETADO','FALLIDO')) NOT NULL,
+    payment_method VARCHAR(50),
+    transaction_id VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

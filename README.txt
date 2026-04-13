@@ -11,67 +11,71 @@ Add environment variables in Render dashboard
 Curl scripts for testing
 
 
-Get (or create) cart
+Create payment (USER)
 
-curl -X GET http://localhost:8084/cart \
-  -b cookies.txt
-
-
-
-Add item
-
-curl -X POST http://localhost:8084/cart/items \
+curl -X POST http://localhost:8088/payments \
   -H "Content-Type: application/json" \
   -b cookies.txt \
   -d '{
-    "product_id": 1,
-    "quantity": 2,
-    "price_at_add": 1000.00
+    "order_id": 1,
+    "amount": 150.50,
+    "payment_method": "CARD"
   }'
 
 
 
-Update item quantity
+Get payment by ID (USER)
 
-curl -X PUT http://localhost:8084/cart/items/6 \
+curl -X GET http://localhost:8088/payments/1 \
+  -b cookies.txt
+
+
+
+Get payments by order (USER)
+
+curl -X GET http://localhost:8088/orders/1/payments \
+  -b cookies.txt
+
+
+
+Update payment status (ADMIN only)
+
+curl -X PATCH http://localhost:8088/payments/1 \
   -H "Content-Type: application/json" \
   -b cookies.txt \
   -d '{
-    "quantity": 5
+    "status": "COMPLETADO",
+    "transaction_id": "TXN-ABC-123"
   }'
 
 
 
-Get total
+Simulate failure (ADMIN)
 
-curl -X GET http://localhost:8084/cart/total \
-  -b cookies.txt
-
-
-
-Delete item
-
-curl -X DELETE http://localhost:8084/cart/items/3 \
-  -b cookies.txt
+curl -X PATCH http://localhost:8088/payments/1 \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "status": "FALLIDO",
+    "transaction_id": "TXN-FAILED-999"
+  }'
 
 
 
-Admin-only: get all carts
+Invalid access test (no cookie)
 
-curl -X GET http://localhost:8084/admin/carts \
-  -b cookies.txt
-
-
-
-Delete own cart
-
-curl -X DELETE http://localhost:8084/cart \
-  -b cookies.txt
+curl -X GET http://localhost:8088/payments/1
 
 
 
-Admin: delete specific cart
+Role enforcement test
 
-curl -X DELETE http://localhost:8084/admin/carts/1 \
-  -b cookies.txt
+curl -X PATCH http://localhost:8088/payments/1 \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "status": "COMPLETADO"
+  }'
+
+
 
