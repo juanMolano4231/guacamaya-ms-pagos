@@ -10,72 +10,31 @@ Add environment variables in Render dashboard
 
 Curl scripts for testing
 
+Create payment (user):
 
-Create payment (USER)
-
-curl -X POST http://localhost:8088/payments \
+curl -X POST http://localhost:8088/api/payments \
   -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{
-    "order_id": 1,
-    "amount": 150.50,
-    "payment_method": "CARD"
-  }'
+  --cookie cookies.txt \
+  -d '{"order_id":1,"amount":99.99,"payment_method":"credit_card"}'
 
 
 
-Get payment by ID (USER)
+Get payment by ID (user):
 
-curl -X GET http://localhost:8088/payments/1 \
-  -b cookies.txt
-
-
-
-Get payments by order (USER)
-
-curl -X GET http://localhost:8088/orders/1/payments \
-  -b cookies.txt
+curl -X GET http://localhost:8088/api/payments/1 --cookie cookies.txt
 
 
 
-Update payment status (ADMIN only)
+Get payments by order (user):
 
-curl -X PATCH http://localhost:8088/payments/1 \
+curl -X GET http://localhost:8088/api/orders/1/payments --cookie cookies.txt
+
+
+
+Update payment (admin):
+
+curl -X PATCH http://localhost:8088/api/payments/1 \
   -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{
-    "status": "COMPLETADO",
-    "transaction_id": "TXN-ABC-123"
-  }'
-
-
-
-Simulate failure (ADMIN)
-
-curl -X PATCH http://localhost:8088/payments/1 \
-  -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{
-    "status": "FALLIDO",
-    "transaction_id": "TXN-FAILED-999"
-  }'
-
-
-
-Invalid access test (no cookie)
-
-curl -X GET http://localhost:8088/payments/1
-
-
-
-Role enforcement test
-
-curl -X PATCH http://localhost:8088/payments/1 \
-  -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{
-    "status": "COMPLETADO"
-  }'
-
-
+  --cookie admin_cookies.txt \
+  -d '{"status":"COMPLETADO","transaction_id":"txn_123456"}'
 
