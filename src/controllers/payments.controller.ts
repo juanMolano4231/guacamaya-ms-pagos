@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
+import { getAllPayments } from '../services/payments.service.js'
 import {
     createPayment,
     getPayment,
@@ -31,4 +32,12 @@ export async function updatePaymentController(request: FastifyRequest, reply: Fa
     const payment = await updatePaymentStatus(id, body.status, body.transaction_id)
     if (!payment) return reply.code(404).send({ message: 'Not found' })
     return reply.send(payment)
+}
+
+export async function getAllPaymentsController(
+    request: FastifyRequest,
+    reply: FastifyReply
+) {
+    const payments = await getAllPayments()
+    return reply.send(payments)
 }

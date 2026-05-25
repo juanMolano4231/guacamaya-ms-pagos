@@ -3,6 +3,7 @@ import { authMiddleware } from '../middleware/auth.js'
 import { authorize } from '../middleware/authorize.js'
 import {
     createPaymentController,
+    getAllPaymentsController,
     getPaymentController,
     getPaymentsByOrderController,
     updatePaymentController,
@@ -18,4 +19,5 @@ export default async function paymentsRoutes(fastify: FastifyInstance) {
     fastify.patch('/payments/:id', {
         preHandler: [authMiddleware, authorize(['ADMIN'])]
     }, updatePaymentController)
+    fastify.get('/payments', { preHandler: authMiddleware }, getAllPaymentsController)
 }

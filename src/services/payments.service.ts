@@ -1,4 +1,4 @@
-import {pool} from "../db/index.js";
+import { pool } from "../db/index.js";
 
 export async function createPayment(order_id: number, amount: number, method: string) {
     const result = await pool.query(
@@ -43,4 +43,12 @@ export async function updatePaymentStatus(
     );
 
     return result.rows[0];
+}
+
+export async function getAllPayments() {
+    const result = await pool.query(
+        `SELECT * FROM payments ORDER BY created_at DESC`
+    )
+
+    return result.rows
 }
