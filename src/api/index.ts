@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import paymentsRoutes from '../src/routes/payments.routes.js'
+import paymentsRoutes from '../routes/payments.routes.js'
 
 const app = fastify({ logger: true })
 
