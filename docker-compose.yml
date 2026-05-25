@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    container_name: ms-pagos
     ports:
       - "8088:8080"
     env_file:
@@ -8,6 +9,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - default
+      - guacamaya-net
 
   db:
     image: postgres:16
@@ -26,6 +30,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - default
 
 volumes:
   guacamaya_pagos:
+
+networks:
+  default: {}
+  guacamaya-net:
+    external: true
