@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "build": "tsc",
-  "start": "node dist/app.js",
-  "vercel-build": "tsc --outDir dist"
-},
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "vercel-build": "tsc && cp -r dist/src/* dist/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/juanMolano4231/guacamaya-ms-pagos.git"
