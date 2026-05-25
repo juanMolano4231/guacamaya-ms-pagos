@@ -10,68 +10,31 @@ Add environment variables in Render dashboard
 
 Curl scripts for testing
 
+Create payment (user):
 
-Get (or create) cart
-
-curl -X GET http://localhost:8084/cart \
-  -b cookies.txt
-
-
-
-Add item
-
-curl -X POST http://localhost:8084/cart/items \
+curl -X POST http://localhost:8088/api/payments \
   -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{
-    "product_id": 1,
-    "quantity": 2,
-    "price_at_add": 1000.00
-  }'
+  --cookie cookies.txt \
+  -d '{"order_id":1,"amount":99.99,"payment_method":"credit_card"}'
 
 
 
-Update item quantity
+Get payment by ID (user):
 
-curl -X PUT http://localhost:8084/cart/items/6 \
+curl -X GET http://localhost:8088/api/payments/1 --cookie cookies.txt
+
+
+
+Get payments by order (user):
+
+curl -X GET http://localhost:8088/api/orders/1/payments --cookie cookies.txt
+
+
+
+Update payment (admin):
+
+curl -X PATCH http://localhost:8088/api/payments/1 \
   -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{
-    "quantity": 5
-  }'
-
-
-
-Get total
-
-curl -X GET http://localhost:8084/cart/total \
-  -b cookies.txt
-
-
-
-Delete item
-
-curl -X DELETE http://localhost:8084/cart/items/3 \
-  -b cookies.txt
-
-
-
-Admin-only: get all carts
-
-curl -X GET http://localhost:8084/admin/carts \
-  -b cookies.txt
-
-
-
-Delete own cart
-
-curl -X DELETE http://localhost:8084/cart \
-  -b cookies.txt
-
-
-
-Admin: delete specific cart
-
-curl -X DELETE http://localhost:8084/admin/carts/1 \
-  -b cookies.txt
+  --cookie admin_cookies.txt \
+  -d '{"status":"COMPLETADO","transaction_id":"txn_123456"}'
 

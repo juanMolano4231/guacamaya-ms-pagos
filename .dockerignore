@@ -1,7 +1,4 @@
-.gradle
-build
 node_modules
+dist
 .git
-.gitignore
-Dockerfile
-README.md
+.env

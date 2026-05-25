@@ -1,11 +1,14 @@
-FROM python:3.12-alpine
-
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+COPY package*.json ./
+RUN npm ci
 COPY . .
+RUN npm run build
 
-EXPOSE 3000
-CMD ["python", "app.py"]
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+RUN npm ci --only=production
+EXPOSE 8080
+CMD ["node", "dist/app.js"]
